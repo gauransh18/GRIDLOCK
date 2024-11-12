@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:simple_animated_button/elevated_layer_button.dart';
 import 'settings_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:async';
 
 class GamePage extends StatefulWidget {
   final String title;
@@ -16,30 +17,61 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
+  Timer? _turnTimer;
+  int _remainingTime = 10;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final game = Provider.of<Game>(context, listen: false);
       game.addListener(_gameListener);
+      _startTimer();
     });
   }
 
   @override
   void dispose() {
+    _turnTimer?.cancel();
     final game = Provider.of<Game>(context, listen: false);
     game.removeListener(_gameListener);
     super.dispose();
   }
 
+  void _startTimer() {
+    _turnTimer?.cancel();
+    setState(() {
+      _remainingTime = 10;
+    });
+    _turnTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_remainingTime > 0) {
+        setState(() {
+          _remainingTime--;
+        });
+      } else {
+        _turnTimer?.cancel();
+        _handleTimeOut();
+      }
+    });
+  }
+
+  void _handleTimeOut() {
+    final game = Provider.of<Game>(context, listen: false);
+    game.switchPlayer(); 
+    _startTimer();
+  }
+
   void _gameListener() {
     final game = Provider.of<Game>(context, listen: false);
     if (game.isGameOver) {
+      _turnTimer?.cancel();
       if (game.winner != null) {
         _showWinnerDialog(game.winner!);
       } else {
         _showDrawDialog();
       }
+    } else {
+      _startTimer();
     }
   }
 
@@ -117,18 +149,12 @@ class _GamePageState extends State<GamePage> {
     return Scaffold(
       backgroundColor: Color(0xFF87CEFA),
       appBar: AppBar(
-       
-        backgroundColor: Colors.transparent,
-        // title: Text(
-        //   widget.title,
-        //   style: GoogleFonts.barriecito(
-        //     textStyle: TextStyle(
-        //       fontSize: 24.0,
-        //       fontWeight: FontWeight.w900,
-        //       color: Colors.white,
-        //     ),
-        //   ),
-        // ),
+        backgroundColor: const Color.fromARGB(255, 53, 171, 255),
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black, width: 2),
+          borderRadius: BorderRadius.zero,
+        ),
         actions: [
           ElevatedLayerButton(
             onClick: _resetGame,
@@ -165,25 +191,35 @@ class _GamePageState extends State<GamePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 20),
-            RichText(
-              text: TextSpan(
-                text: 'Current Turn: ',
-                style: GoogleFonts.slackey(
-                  textStyle: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.white,
-                  ),
-                ),
-                children: [
-                  TextSpan(
-                    text: currentTurn,
-                    style: TextStyle(
-                      color: currentTurn == "Player 1" ? player1Color : player2Color,
+            Column(
+              children: [
+                Text(
+                  'Current Turn',
+                  style: GoogleFonts.slackey(
+                    textStyle: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
                     ),
                   ),
-                ],
+                ),
+                Text(
+                  currentTurn,
+                  style: GoogleFonts.slackey(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w900,
+                    color: currentTurn == "Player 1" ? player1Color : player2Color,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 40),
+            Text(
+              'Time Remaining: $_remainingTime seconds',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
             const SizedBox(height: 20),
@@ -199,3 +235,4 @@ class _GamePageState extends State<GamePage> {
     );
   }
 }
+
