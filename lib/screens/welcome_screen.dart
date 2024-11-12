@@ -1,46 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:html' as html; // Import for web
+import 'package:simple_animated_button/simple_animated_button.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
-  void _exitGame() {
-    SystemNavigator.pop();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Welcome to Marble Game'),
-      ),
+      backgroundColor: Color(0xFF87CEFA),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Welcome to Counterclockwise Marble Game',
-              style: TextStyle(fontSize: 24),
-              textAlign: TextAlign.center,
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                // Stroke
+                Text(
+                  'GRIDLOCK',
+                  style: GoogleFonts.barriecito(
+                    textStyle: TextStyle(
+                      fontSize: 92.0,
+                      fontWeight: FontWeight.w900, // Thicker font weight
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 3.0 // Thicker stroke width
+                        ..color = Colors.black, // Border color
+                    ),
+                  ),
+                ),
+                // Fill
+                Text(
+                  'GRIDLOCK',
+                  style: GoogleFonts.barriecito(
+                    textStyle: TextStyle(
+                      fontSize: 92.0,
+                      fontWeight: FontWeight.w900, // Thicker font weight
+                      color: Colors.white, // Text fill color
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () {
+            const SizedBox(height: 20),
+            ElevatedLayerButton(
+              onClick: () {
                 Navigator.pushNamed(context, '/game');
               },
-              child: const Text('Play'),
+              buttonHeight: 60,
+              buttonWidth: 270,
+              animationDuration: const Duration(milliseconds: 200),
+              animationCurve: Curves.ease,
+              topDecoration: BoxDecoration(
+                color: Colors.amber,
+                border: Border.all(),
+              ),
+              topLayerChild: const Text(
+                "Play",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              baseDecoration: BoxDecoration(
+                color: Colors.green,
+                border: Border.all(),
+              ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
+            ElevatedLayerButton(
+              onClick: () {
                 Navigator.pushNamed(context, '/settings');
               },
-              child: const Text('Settings'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _exitGame,
-              child: const Text('Exit'),
+              buttonHeight: 60,
+              buttonWidth: 270,
+              animationDuration: const Duration(milliseconds: 200),
+              animationCurve: Curves.ease,
+              topDecoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(),
+              ),
+              topLayerChild: const Text(
+                "Settings",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              baseDecoration: BoxDecoration(
+                color: Colors.blue,
+                border: Border.all(),
+              ),
             ),
           ],
         ),
