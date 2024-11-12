@@ -79,15 +79,31 @@ class _GamePageState extends State<GamePage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title:
-            Text('${winner == Player.Player1 ? "Player 1" : "Player 2"} Wins!'),
+        backgroundColor:Colors.amber,// const Color(0xFF87CEFA),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black, width: 2),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        title: Text(
+          '${winner == Player.Player1 ? "Player 1" : "Player 2"} Wins!',
+          style: GoogleFonts.slackey(
+            textStyle: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               Provider.of<Game>(context, listen: false).resetGame();
             },
-            child: const Text('Play Again'),
+            child: Text(
+              'Play Again',
+              style: GoogleFonts.slackey(color: Colors.brown,fontWeight: FontWeight.bold,),
+            ),
           ),
         ],
       ),
@@ -99,14 +115,31 @@ class _GamePageState extends State<GamePage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('It\'s a Draw!'),
+        backgroundColor: Colors.amber, //const Color(0xFF87CEFA),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black, width: 2),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        title:  Text(
+          'It\'s a Draw!',
+          style: GoogleFonts.slackey(
+            textStyle: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               Provider.of<Game>(context, listen: false).resetGame();
             },
-            child: const Text('Play Again'),
+            child:  Text(
+              'Play Again',
+              style: GoogleFonts.slackey(color: Colors.brown,fontWeight: FontWeight.bold,),
+            ),
           ),
         ],
       ),
@@ -118,19 +151,47 @@ class _GamePageState extends State<GamePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Reset Game'),
-        content: const Text('Are you sure you want to reset the game?'),
+        backgroundColor: Colors.amber, 
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black, width: 2), 
+          borderRadius: BorderRadius.circular(10), 
+        ),
+        title: Text(
+          'Reset Game',
+          style: GoogleFonts.slackey(
+            textStyle: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        content: Text(
+          'Are you sure?',
+          style: GoogleFonts.slackey(
+            textStyle: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+            ),
+          ),
+        ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(), // Cancel action
-            child: const Text('Cancel'),
+            onPressed: () => Navigator.of(context).pop(), 
+            child: Text(
+              'Cancel',
+              style: GoogleFonts.slackey(color: Colors.brown), 
+            ),
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-              Provider.of<Game>(context, listen: false).resetGame(); // Reset the game
+              Navigator.of(context).pop(); 
+              Provider.of<Game>(context, listen: false).resetGame(); 
             },
-            child: const Text('Reset'),
+            child: Text(
+              'Reset',
+              style: GoogleFonts.slackey(color: Colors.brown), 
+            ),
           ),
         ],
       ),
