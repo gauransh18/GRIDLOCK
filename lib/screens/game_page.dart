@@ -26,8 +26,16 @@ class _GamePageState extends State<GamePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final game = Provider.of<Game>(context, listen: false);
       game.addListener(_gameListener);
-      _startTimer();
+      _initializeTimer();
     });
+  }
+
+  void _initializeTimer() {
+    final game = Provider.of<Game>(context, listen: false);
+    setState(() {
+      _remainingTime = game.timerDuration;
+    });
+    _startTimer();
   }
 
   @override
@@ -40,9 +48,6 @@ class _GamePageState extends State<GamePage> {
 
   void _startTimer() {
     _turnTimer?.cancel();
-    setState(() {
-      _remainingTime = 10;
-    });
     _turnTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       if (_remainingTime > 0) {
         setState(() {
@@ -57,8 +62,8 @@ class _GamePageState extends State<GamePage> {
 
   void _handleTimeOut() {
     final game = Provider.of<Game>(context, listen: false);
-    game.switchPlayer(); 
-    _startTimer();
+    game.switchPlayer();
+    _initializeTimer();
   }
 
   void _gameListener() {
@@ -71,7 +76,7 @@ class _GamePageState extends State<GamePage> {
         _showDrawDialog();
       }
     } else {
-      _startTimer();
+      _initializeTimer();
     }
   }
 
@@ -79,7 +84,7 @@ class _GamePageState extends State<GamePage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor:Colors.amber,// const Color(0xFF87CEFA),
+        backgroundColor: Colors.amber,
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Colors.black, width: 2),
           borderRadius: BorderRadius.circular(10),
@@ -102,7 +107,7 @@ class _GamePageState extends State<GamePage> {
             },
             child: Text(
               'Play Again',
-              style: GoogleFonts.slackey(color: Colors.brown,fontWeight: FontWeight.bold,),
+              style: GoogleFonts.slackey(fontSize: 16, color: Colors.brown),
             ),
           ),
         ],
@@ -115,12 +120,12 @@ class _GamePageState extends State<GamePage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: Colors.amber, //const Color(0xFF87CEFA),
+        backgroundColor: Colors.amber,
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Colors.black, width: 2),
           borderRadius: BorderRadius.circular(10),
         ),
-        title:  Text(
+        title: Text(
           'It\'s a Draw!',
           style: GoogleFonts.slackey(
             textStyle: TextStyle(
@@ -136,9 +141,9 @@ class _GamePageState extends State<GamePage> {
               Navigator.of(context).pop();
               Provider.of<Game>(context, listen: false).resetGame();
             },
-            child:  Text(
+            child: Text(
               'Play Again',
-              style: GoogleFonts.slackey(color: Colors.brown,fontWeight: FontWeight.bold,),
+              style: GoogleFonts.slackey(fontSize: 16, color: Colors.brown),
             ),
           ),
         ],
@@ -146,15 +151,15 @@ class _GamePageState extends State<GamePage> {
       barrierDismissible: false,
     );
   }
-  
+
   void _resetGame() {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Colors.amber, 
+        backgroundColor: Colors.amber,
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.black, width: 2), 
-          borderRadius: BorderRadius.circular(10), 
+          side: BorderSide(color: Colors.black, width: 2),
+          borderRadius: BorderRadius.circular(10),
         ),
         title: Text(
           'Reset Game',
@@ -170,34 +175,34 @@ class _GamePageState extends State<GamePage> {
           'Are you sure?',
           style: GoogleFonts.slackey(
             textStyle: TextStyle(
-              fontSize: 18,
+              fontSize: 20,
               color: Colors.white,
             ),
           ),
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(), 
+            onPressed: () => Navigator.of(context).pop(),
             child: Text(
               'Cancel',
-              style: GoogleFonts.slackey(color: Colors.brown), 
+              style: GoogleFonts.slackey(fontSize: 16, color: Colors.brown),
             ),
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); 
-              Provider.of<Game>(context, listen: false).resetGame(); 
+              Navigator.of(context).pop();
+              Provider.of<Game>(context, listen: false).resetGame();
             },
             child: Text(
               'Reset',
-              style: GoogleFonts.slackey(color: Colors.brown), 
+              style: GoogleFonts.slackey(fontSize: 16, color: Colors.brown),
             ),
           ),
         ],
       ),
     );
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final game = Provider.of<Game>(context);
@@ -247,53 +252,56 @@ class _GamePageState extends State<GamePage> {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  'Current Turn',
-                  style: GoogleFonts.slackey(
-                    textStyle: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.white,
+                Column(
+                  children: [
+                    Text(
+                      'Current Turn',
+                      style: GoogleFonts.slackey(
+                        textStyle: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
+                    Text(
+                      currentTurn,
+                      style: GoogleFonts.slackey(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w900,
+                        color: currentTurn == "Player 1" ? player1Color : player2Color,
+                      ),
+                    ),
+                  ],
                 ),
+                const SizedBox(height: 40),
                 Text(
-                  currentTurn,
-                  style: GoogleFonts.slackey(
-                    fontSize: 40,
-                    fontWeight: FontWeight.w900,
-                    color: currentTurn == "Player 1" ? player1Color : player2Color,
+                  'Time Remaining: $_remainingTime seconds',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
+                const SizedBox(height: 20),
+
+                SizedBox(
+                  height: constraints.maxHeight * 0.5, 
+                  child: const GameBoard(),
+                ),
+                const SizedBox(height: 20),
               ],
             ),
-            const SizedBox(height: 40),
-            Text(
-              'Time Remaining: $_remainingTime seconds',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Center(
-              child: const Expanded(
-                child: GameBoard(),
-              ),
-            ),
-            const SizedBox(height: 20),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 }
-

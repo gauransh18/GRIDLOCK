@@ -11,6 +11,8 @@ class Game extends ChangeNotifier {
   Color player1Color = Colors.red;
   Color player2Color = Colors.blue;
 
+  int timerDuration = 10; 
+
   Game()
       : board = List.generate(4, (_) => List.filled(4, null)),
         currentPlayer = Player.Player1,
@@ -184,6 +186,11 @@ class Game extends ChangeNotifier {
     } else {
       player2Color = color;
     }
+    notifyListeners();
+  }
+
+  void setTimerDuration(int duration) {
+    timerDuration = duration;
     notifyListeners();
   }
 }
