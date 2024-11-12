@@ -78,7 +78,30 @@ class _GamePageState extends State<GamePage> {
       barrierDismissible: false,
     );
   }
-
+  
+  void _resetGame() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Reset Game'),
+        content: const Text('Are you sure you want to reset the game?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(), // Cancel action
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+              Provider.of<Game>(context, listen: false).resetGame(); // Reset the game
+            },
+            child: const Text('Reset'),
+          ),
+        ],
+      ),
+    );
+  }
+  
   @override
   Widget build(BuildContext context) {
     final game = Provider.of<Game>(context);
@@ -88,6 +111,14 @@ class _GamePageState extends State<GamePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          // Add Reset Button in the AppBar
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            tooltip: 'Reset Game',
+            onPressed: _resetGame,
+          ),
+        ],
       ),
       body: Column(
         children: [
