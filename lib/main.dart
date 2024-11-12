@@ -20,14 +20,14 @@ class MarbleGameApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Counterclockwise Marble Game',
+      title: 'GridLock',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       initialRoute: '/',
       routes: {
         '/': (context) => const WelcomeScreen(),
-        '/game': (context) => const GamePage(title: 'Marble Game'),
+        '/game': (context) => const GamePage(title: 'GridLock'),
         '/settings': (context) => const SettingsScreen(),
       },
     );
