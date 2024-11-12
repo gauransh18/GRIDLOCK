@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'dart:html' as html; // Import for web
 import 'package:simple_animated_button/simple_animated_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -19,17 +17,16 @@ class WelcomeScreen extends StatelessWidget {
             Stack(
               alignment: Alignment.center,
               children: [
-                // Stroke
                 Text(
                   'GRIDLOCK',
                   style: GoogleFonts.barriecito(
                     textStyle: TextStyle(
                       fontSize: 92.0,
-                      fontWeight: FontWeight.w900, // Thicker font weight
+                      fontWeight: FontWeight.w900, 
                       foreground: Paint()
                         ..style = PaintingStyle.stroke
-                        ..strokeWidth = 3.0 // Thicker stroke width
-                        ..color = Colors.black, // Border color
+                        ..strokeWidth = 3.0 
+                        ..color = Colors.black, 
                     ),
                   ),
                 ),
@@ -39,8 +36,8 @@ class WelcomeScreen extends StatelessWidget {
                   style: GoogleFonts.barriecito(
                     textStyle: TextStyle(
                       fontSize: 92.0,
-                      fontWeight: FontWeight.w900, // Thicker font weight
-                      color: Colors.white, // Text fill color
+                      fontWeight: FontWeight.w900, 
+                      color: Colors.white, 
                     ),
                   ),
                 ),
