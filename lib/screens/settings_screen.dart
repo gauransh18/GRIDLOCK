@@ -29,6 +29,29 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final game = Provider.of<Game>(context);
 
+    List<DropdownMenuItem<Color>> _buildColorItems(Color selectedColor) {
+      final colors = [
+        Colors.red,
+        Colors.green,
+        Colors.blue,
+        Colors.yellow,
+        Colors.purple,
+        Colors.orange,
+      ];
+
+      return colors.map((color) {
+        return DropdownMenuItem<Color>(
+          value: color,
+          child: Container(
+            width: 24,
+            height: 24,
+            color: color,
+          ),
+          enabled: color != selectedColor,
+        );
+      }).toList();
+    }
+
     return Scaffold(
       backgroundColor: Color(0xFF87CEFA),
       appBar: AppBar(
@@ -73,32 +96,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     DropdownButton<Color>(
                       value: game.player1Color,
-                      items: [
-                        DropdownMenuItem(
-                          value: Colors.red,
-                          child: Container(
-                            width: 24,
-                            height: 24,
-                            color: Colors.red,
-                          ),
-                        ),
-                        DropdownMenuItem(
-                          value: Colors.green,
-                          child: Container(
-                            width: 24,
-                            height: 24,
-                            color: Colors.green,
-                          ),
-                        ),
-                        DropdownMenuItem(
-                          value: Colors.blue,
-                          child: Container(
-                            width: 24,
-                            height: 24,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ],
+                      items: _buildColorItems(game.player2Color),
                       onChanged: (Color? color) {
                         if (color != null) _changePlayerColor(context, Player.Player1, color);
                       },
@@ -122,32 +120,7 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     DropdownButton<Color>(
                       value: game.player2Color,
-                      items: [
-                        DropdownMenuItem(
-                          value: Colors.red,
-                          child: Container(
-                            width: 24,
-                            height: 24,
-                            color: Colors.red,
-                          ),
-                        ),
-                        DropdownMenuItem(
-                          value: Colors.green,
-                          child: Container(
-                            width: 24,
-                            height: 24,
-                            color: Colors.green,
-                          ),
-                        ),
-                        DropdownMenuItem(
-                          value: Colors.blue,
-                          child: Container(
-                            width: 24,
-                            height: 24,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ],
+                      items: _buildColorItems(game.player1Color),
                       onChanged: (Color? color) {
                         if (color != null) _changePlayerColor(context, Player.Player2, color);
                       },
