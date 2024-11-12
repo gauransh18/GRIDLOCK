@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gridlock/models/game.dart';
 import 'package:gridlock/widgets/game_board.dart';
 import 'package:provider/provider.dart';
+import 'settings_screen.dart';
 
 class GamePage extends StatefulWidget {
   final String title;
@@ -112,11 +113,19 @@ class _GamePageState extends State<GamePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-          // Add Reset Button in the AppBar
           IconButton(
             icon: const Icon(Icons.refresh),
             tooltip: 'Reset Game',
             onPressed: _resetGame,
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            tooltip: 'Settings',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              );
+            },
           ),
         ],
       ),

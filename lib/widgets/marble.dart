@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/game.dart';
 
 class Marble extends StatelessWidget {
@@ -12,13 +13,14 @@ class Marble extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
+    final game = Provider.of<Game>(context, listen: false);
     Color color;
     switch (player!) {
       case Player.Player1:
-        color = Colors.red;
+        color = game.player1Color;
         break;
       case Player.Player2:
-        color = Colors.blue;
+        color = game.player2Color;
         break;
     }
 

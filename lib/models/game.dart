@@ -8,6 +8,9 @@ class Game extends ChangeNotifier {
   bool isGameOver;
   Player? winner;
 
+  Color player1Color = Colors.red;
+  Color player2Color = Colors.blue;
+
   Game()
       : board = List.generate(4, (_) => List.filled(4, null)),
         currentPlayer = Player.Player1,
@@ -173,6 +176,15 @@ class Game extends ChangeNotifier {
         destination[r][c] = source[r][c];
       }
     }
+  }
+
+  void changePlayerColor(Player player, Color color) {
+    if (player == Player.Player1) {
+      player1Color = color;
+    } else {
+      player2Color = color;
+    }
+    notifyListeners();
   }
 }
 

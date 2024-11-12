@@ -32,6 +32,13 @@ class WelcomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/settings');
+              },
+              child: const Text('Settings'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
               onPressed: _exitGame,
               child: const Text('Exit'),
             ),

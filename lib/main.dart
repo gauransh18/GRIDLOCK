@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gridlock/screens/game_page.dart';
 import 'package:gridlock/screens/welcome_screen.dart';
+import 'package:gridlock/screens/settings_screen.dart';
 import 'package:provider/provider.dart';
 import 'models/game.dart';
-import 'widgets/game_board.dart';
 
 void main() {
   runApp(
@@ -28,6 +28,7 @@ class MarbleGameApp extends StatelessWidget {
       routes: {
         '/': (context) => const WelcomeScreen(),
         '/game': (context) => const GamePage(title: 'Marble Game'),
+        '/settings': (context) => const SettingsScreen(),
       },
     );
   }
