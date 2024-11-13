@@ -1,16 +1,33 @@
-# gridlock
+# Gridlock
 
-A new Flutter project.
+Connect 4 game with a twist.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- 4x4 game board with shifting mechanics
+- Two-player turn-based gameplay
+- Customizable player colors
+- Game history tracking
 
-A few resources to get you started if this is your first Flutter project:
+## Installation
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Clone and navigate:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+git clone https://github.com/your-repo/gridlock.git
+cd gridlock
+```
+
+2. Install and run:
+
+```bash
+flutter pub get
+flutter run
+```
+
+## Dependencies
+
+- Flutter SDK (3.0.0+)
+- Provider
+- Hive
+- Google Fonts
