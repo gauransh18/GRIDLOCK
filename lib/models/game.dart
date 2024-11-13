@@ -22,6 +22,7 @@ class Game extends ChangeNotifier {
         winner = null;
 
   List<List<Player?>> previousBoard = List.generate(4, (_) => List.filled(4, null));
+  List<Position> winningPositions = [];
 
   bool canPlaceMarble(int row, int col) {
     return board[row][col] == null && !isGameOver;
@@ -102,17 +103,22 @@ class Game extends ChangeNotifier {
   }
 
   void checkWinner() {
-    // Rows and Columns
+    winningPositions = [];
+
     for (int i = 0; i < 4; i++) {
       if (board[i].every((player) => player == Player.Player1)) {
+        winningPositions = List.generate(4, (col) => Position(row: i, col: col));
         endGame(Player.Player1);
         return;
       }
       if (board[i].every((player) => player == Player.Player2)) {
+        winningPositions = List.generate(4, (col) => Position(row: i, col: col));
         endGame(Player.Player2);
         return;
       }
+    }
 
+    for (int i = 0; i < 4; i++) {
       bool player1Win = true;
       bool player2Win = true;
       for (int r = 0; r < 4; r++) {
@@ -120,16 +126,17 @@ class Game extends ChangeNotifier {
         if (board[r][i] != Player.Player2) player2Win = false;
       }
       if (player1Win) {
+        winningPositions = List.generate(4, (row) => Position(row: row, col: i));
         endGame(Player.Player1);
         return;
       }
       if (player2Win) {
+        winningPositions = List.generate(4, (row) => Position(row: row, col: i));
         endGame(Player.Player2);
         return;
       }
     }
 
-    // Diagonals
     bool player1Diagonal1 = true;
     bool player1Diagonal2 = true;
     bool player2Diagonal1 = true;
@@ -140,23 +147,33 @@ class Game extends ChangeNotifier {
       if (board[i][3 - i] != Player.Player1) player1Diagonal2 = false;
       if (board[i][3 - i] != Player.Player2) player2Diagonal2 = false;
     }
-    if (player1Diagonal1 || player1Diagonal2) {
+    if (player1Diagonal1) {
+      winningPositions = List.generate(4, (i) => Position(row: i, col: i));
       endGame(Player.Player1);
       return;
     }
-    if (player2Diagonal1 || player2Diagonal2) {
+    if (player1Diagonal2) {
+      winningPositions = List.generate(4, (i) => Position(row: i, col: 3 - i));
+      endGame(Player.Player1);
+      return;
+    }
+    if (player2Diagonal1) {
+      winningPositions = List.generate(4, (i) => Position(row: i, col: i));
+      endGame(Player.Player2);
+      return;
+    }
+    if (player2Diagonal2) {
+      winningPositions = List.generate(4, (i) => Position(row: i, col: 3 - i));
       endGame(Player.Player2);
       return;
     }
 
-    // Draw
     bool isDraw = board.every((row) => row.every((cell) => cell != null));
     if (isDraw) {
       isGameOver = true;
       winner = null;
       notifyListeners();
       
-      // Add draw game to history
       final historyBox = Hive.box<GameHistory>('gameHistory');
       final history = GameHistory(board, winner, DateTime.now());
       historyBox.add(history);
@@ -180,6 +197,7 @@ class Game extends ChangeNotifier {
     winner = null;
 
     previousBoard = List.generate(4, (_) => List.filled(4, null));
+    winningPositions = [];
     notifyListeners();
   }
 
