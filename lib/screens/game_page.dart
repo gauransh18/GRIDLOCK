@@ -235,7 +235,7 @@ class _GamePageState extends State<GamePage> {
                   ),
                 ),
                 subtitle: Text(
-                  'Winner: ${history.winner == Player.Player1 ? "Player 1" : "Player 2"}',
+                  'Winner: ${history.winner == null ? "No one" : (history.winner == Player.Player1 ? "Player 1" : "Player 2")}',
                   style: GoogleFonts.slackey(
                     textStyle: TextStyle(
                       fontSize: 16,

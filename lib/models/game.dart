@@ -155,6 +155,11 @@ class Game extends ChangeNotifier {
       isGameOver = true;
       winner = null;
       notifyListeners();
+      
+      // Add draw game to history
+      final historyBox = Hive.box<GameHistory>('gameHistory');
+      final history = GameHistory(board, winner, DateTime.now());
+      historyBox.add(history);
     }
   }
 
@@ -164,7 +169,7 @@ class Game extends ChangeNotifier {
     notifyListeners();
 
     final historyBox = Hive.box<GameHistory>('gameHistory');
-    final history = GameHistory(board, winner!, DateTime.now());
+    final history = GameHistory(board, winner, DateTime.now());
     historyBox.add(history);
   }
 

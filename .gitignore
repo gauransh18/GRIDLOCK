@@ -41,3 +41,13 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+#Firebase
+/ios/Runner.xcworkspace/
+/ios/Runner.xcodeproj/
+/ios/Runner.framework/
+/ios/Runner.app/
+
+.firebase/
+firebase.json
+.firebaserc

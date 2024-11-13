@@ -20,7 +20,7 @@ class GameHistoryAdapter extends TypeAdapter<GameHistory> {
       (fields[0] as List)
           .map((dynamic e) => (e as List).cast<Player?>())
           .toList(),
-      fields[1] as Player,
+      fields[1] as Player?,
       fields[2] as DateTime,
     );
   }

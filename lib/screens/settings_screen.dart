@@ -150,9 +150,9 @@ class SettingsScreen extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                // Rules Section
+                // How to Play Section
                 Text(
-                  'Game Rules',
+                  'How to Play',
                   style: GoogleFonts.slackey(
                     textStyle: TextStyle(
                       fontSize: 20,
@@ -163,10 +163,11 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  '1. Each player takes turns to make a move.\n'
+                  '1. Each player takes turns to place a marble on the board.\n'
                   '2. The player who aligns their pieces first wins.\n'
                   '3. If the board is full and no player has aligned their pieces, it\'s a draw.\n'
-                  '4. Use the timer to ensure quick gameplay.',
+                  '4. After placing a marble, the outer and inner marbles shift counter-clockwise.\n'
+                  '5. Use the timer to ensure quick gameplay.',
                   style: GoogleFonts.slackey(
                     textStyle: TextStyle(
                       fontSize: 16,

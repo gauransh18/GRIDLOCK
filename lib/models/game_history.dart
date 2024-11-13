@@ -9,7 +9,7 @@ class GameHistory extends HiveObject {
   final List<List<Player?>> board;
 
   @HiveField(1)
-  final Player winner;
+  final Player? winner;
 
   @HiveField(2)
   final DateTime date;
