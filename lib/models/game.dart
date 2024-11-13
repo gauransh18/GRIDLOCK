@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gridlock/models/game_history.dart';
+import 'package:hive/hive.dart';
 
 enum Player { Player1, Player2 }
 
@@ -160,6 +162,10 @@ class Game extends ChangeNotifier {
     isGameOver = true;
     winner = winningPlayer;
     notifyListeners();
+
+    final historyBox = Hive.box<GameHistory>('gameHistory');
+    final history = GameHistory(board, winner!, DateTime.now());
+    historyBox.add(history);
   }
 
   void resetGame() {

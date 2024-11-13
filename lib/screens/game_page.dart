@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gridlock/models/game.dart';
+import 'package:gridlock/models/game_history.dart';
 import 'package:gridlock/widgets/game_board.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_animated_button/elevated_layer_button.dart';
 import 'settings_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
+import 'package:intl/intl.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class GamePage extends StatefulWidget {
   final String title;
@@ -26,6 +29,7 @@ class _GamePageState extends State<GamePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final game = Provider.of<Game>(context, listen: false);
       game.addListener(_gameListener);
+      game.resetGame();
       _initializeTimer();
     });
   }
@@ -203,6 +207,51 @@ class _GamePageState extends State<GamePage> {
     );
   }
 
+  void _showGameHistory() {
+    final historyBox = Hive.box<GameHistory>('gameHistory');
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.black.withOpacity(0.5),
+      builder: (context) {
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.9),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: ListView.builder(
+            itemCount: historyBox.length,
+            itemBuilder: (context, index) {
+              final history = historyBox.getAt(index);
+              final formattedDate = DateFormat('yyyy-MM-dd hh:mm a').format(history!.date.toLocal());
+              return ListTile(
+                title: Text(
+                  'Game on: $formattedDate',
+                  style: GoogleFonts.slackey(
+                    textStyle: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                subtitle: Text(
+                  'Winner: ${history.winner == Player.Player1 ? "Player 1" : "Player 2"}',
+                  style: GoogleFonts.slackey(
+                    textStyle: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final game = Provider.of<Game>(context);
@@ -291,12 +340,28 @@ class _GamePageState extends State<GamePage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-
                 SizedBox(
                   height: constraints.maxHeight * 0.5, 
                   child: const GameBoard(),
                 ),
                 const SizedBox(height: 20),
+                GestureDetector(
+                  onVerticalDragUpdate: (details) {
+                    if (details.primaryDelta! < -10) {
+                      _showGameHistory();
+                    }
+                  },
+                  child: Container(
+                    height: 50,
+                    color: Colors.transparent,
+                    child: Center(
+                      child: Text(
+                        'Swipe up to view history',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           );
